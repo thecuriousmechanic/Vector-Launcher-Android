@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextDecoration
 
 @Composable
 fun TaskCard(
     title: String,
-    onClick: () -> Unit = {}
+    completed: Boolean,
+    onClick: () -> Unit
 ) {
 
     Card(
@@ -41,8 +43,19 @@ fun TaskCard(
         ) {
 
             Text(
-                text = title,
-                color = Color.White
+                text = "[$title]",
+
+                color =
+                    if (completed)
+                        Color.Gray
+                    else
+                        Color.White,
+
+                textDecoration =
+                    if (completed)
+                        TextDecoration.LineThrough
+                    else
+                        TextDecoration.None
             )
         }
     }

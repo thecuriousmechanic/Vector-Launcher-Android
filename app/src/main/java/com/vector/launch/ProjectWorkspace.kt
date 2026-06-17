@@ -1,20 +1,32 @@
 package com.vector.launch
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.clickable
 
 @Composable
 fun ProjectWorkspace(
     projectName: String,
     onBack: () -> Unit
-){
+) {
+
+    val tasks = remember {
+
+        mutableStateListOf(
+
+            Task("Continue Development"),
+            Task("Review Notes"),
+            Task("Plan Next Sprint")
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -72,25 +84,74 @@ fun ProjectWorkspace(
             modifier = Modifier.height(12.dp)
         )
 
-        TaskCard(
-            title = "Continue Development"
-        )
+        val activeTasks =
+            tasks.filter { !it.completed }
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
+        val completedTasks =
+            tasks.filter { it.completed }
 
-        TaskCard(
-            title = "Review Notes"
-        )
+        activeTasks.forEach { task ->
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
+            TaskCard(
+                title = task.title,
+                completed = false,
 
-        TaskCard(
-            title = "Plan Next Sprint"
-        )
+                onClick = {
+
+                    val index =
+                        tasks.indexOf(task)
+
+                    tasks[index] =
+                        task.copy(
+                            completed = true
+                        )
+                }
+            )
+
+            Spacer(
+                modifier = Modifier.height(12.dp)
+            )
+        }
+
+        if (completedTasks.isNotEmpty()) {
+
+            Spacer(
+                modifier = Modifier.height(24.dp)
+            )
+
+            Text(
+                text = "Completed",
+                color = Color.Gray,
+                fontSize = 14.sp
+            )
+
+            Spacer(
+                modifier = Modifier.height(12.dp)
+            )
+
+            completedTasks.forEach { task ->
+
+                TaskCard(
+                    title = task.title,
+                    completed = true,
+
+                    onClick = {
+
+                        val index =
+                            tasks.indexOf(task)
+
+                        tasks[index] =
+                            task.copy(
+                                completed = false
+                            )
+                    }
+                )
+
+                Spacer(
+                    modifier = Modifier.height(12.dp)
+                )
+            }
+        }
 
         Spacer(
             modifier = Modifier.height(24.dp)
