@@ -37,7 +37,7 @@ fun ProjectWorkspace(
         Text(
             text = projectName,
             color = Color.White,
-            fontSize = 28.sp
+            fontSize = 24.sp
         )
 
         Spacer(
@@ -106,19 +106,24 @@ fun ProjectWorkspace(
             modifier = Modifier.height(12.dp)
         )
 
-        Text(
-            text = "Design Notes",
-            color = Color.White
+        KnowledgeCard(
+            title = "Design Notes"
         )
 
-        Text(
-            text = "Research",
-            color = Color.White
+        Spacer(
+            modifier = Modifier.height(12.dp)
         )
 
-        Text(
-            text = "Ideas",
-            color = Color.White
+        KnowledgeCard(
+            title = "Research"
+        )
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
+        KnowledgeCard(
+            title = "Ideas"
         )
     }
 }
