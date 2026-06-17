@@ -73,7 +73,10 @@ fun VectorHomeScreen() {
         ) {
 
             ProjectWorkspace(
-                projectName = currentProject
+                projectName = currentProject,
+                onBack = {
+                    currentScreen = "home"
+                }
             )
         }
 
