@@ -72,19 +72,24 @@ fun ProjectWorkspace(
             modifier = Modifier.height(12.dp)
         )
 
-        Text(
-            text = "• Continue Development",
-            color = Color.White
+        TaskCard(
+            title = "Continue Development"
         )
 
-        Text(
-            text = "• Review Notes",
-            color = Color.White
+        Spacer(
+            modifier = Modifier.height(12.dp)
         )
 
-        Text(
-            text = "• Plan Next Sprint",
-            color = Color.White
+        TaskCard(
+            title = "Review Notes"
+        )
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
+        TaskCard(
+            title = "Plan Next Sprint"
         )
 
         Spacer(
