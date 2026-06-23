@@ -4,28 +4,59 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProjectWorkspace(
-    projectName: String,
+    project: ProjectData,
     onBack: () -> Unit
 ) {
 
-    val tasks = remember {
+    val tasks = remember(project.name) {
+        mutableStateListOf(*project.tasks.toTypedArray())
+    }
 
-        mutableStateListOf(
+    var selectedNote by remember {
+        mutableStateOf<Note?>(null)
+    }
 
-            Task("Continue Development"),
-            Task("Review Notes"),
-            Task("Plan Next Sprint")
+    val context = LocalContext.current
+
+    LaunchedEffect(project.name) {
+
+        tasks.indices.forEach { index ->
+
+            val savedState =
+                TaskStorage.loadTaskState(
+                    context,
+                    "${project.name}_${tasks[index].title}"
+                )
+
+            tasks[index] =
+                tasks[index].copy(
+                    completed = savedState
+                )
+        }
+    }
+
+    if (selectedNote != null) {
+
+        NoteEditor(
+            note = selectedNote!!,
+
+            onBack = {
+                selectedNote = null
+            }
         )
+
+        return
     }
 
     Column(
@@ -47,7 +78,7 @@ fun ProjectWorkspace(
         )
 
         Text(
-            text = projectName,
+            text = project.name,
             color = Color.White,
             fontSize = 24.sp
         )
@@ -105,6 +136,17 @@ fun ProjectWorkspace(
                         task.copy(
                             completed = true
                         )
+
+                    kotlinx.coroutines.CoroutineScope(
+                        kotlinx.coroutines.Dispatchers.IO
+                    ).launch {
+
+                        TaskStorage.saveTaskState(
+                            context,
+                            "${project.name}_${task.title}",
+                            true
+                        )
+                    }
                 }
             )
 
@@ -144,6 +186,17 @@ fun ProjectWorkspace(
                             task.copy(
                                 completed = false
                             )
+
+                        kotlinx.coroutines.CoroutineScope(
+                            kotlinx.coroutines.Dispatchers.IO
+                        ).launch {
+
+                            TaskStorage.saveTaskState(
+                                context,
+                                "${project.name}_${task.title}",
+                                false
+                            )
+                        }
                     }
                 )
 
@@ -167,24 +220,20 @@ fun ProjectWorkspace(
             modifier = Modifier.height(12.dp)
         )
 
-        KnowledgeCard(
-            title = "Design Notes"
-        )
+        project.notes.forEach { note ->
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
+            KnowledgeCard(
+                title = note.title,
 
-        KnowledgeCard(
-            title = "Research"
-        )
+                onClick = {
+                    selectedNote = note
+                }
+            )
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
+            Spacer(
+                modifier = Modifier.height(12.dp)
+            )
+        }
 
-        KnowledgeCard(
-            title = "Ideas"
-        )
+        }
     }
-}

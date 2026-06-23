@@ -49,7 +49,7 @@ fun VectorHomeScreen() {
     }
 
     var currentProject by remember {
-        mutableStateOf("Vector Launcher")
+        mutableStateOf<ProjectData?>(null)
     }
 
     val priorities = listOf(
@@ -58,12 +58,9 @@ fun VectorHomeScreen() {
         Priority("Advance Renovation")
     )
 
-    val projects = listOf(
-        Project("Vector Launcher"),
-        Project("Server Research"),
-        Project("Renovation"),
-        Project("Knowledge Base")
-    )
+    val projects = ProjectRepository.projects.values.map {
+        Project(it.name)
+    }
 
     if (currentScreen == "workspace") {
 
@@ -72,12 +69,15 @@ fun VectorHomeScreen() {
             color = Color.Black
         ) {
 
-            ProjectWorkspace(
-                projectName = currentProject,
-                onBack = {
-                    currentScreen = "home"
-                }
-            )
+            currentProject?.let { project ->
+
+                ProjectWorkspace(
+                    project = project,
+                    onBack = {
+                        currentScreen = "home"
+                    }
+                )
+            }
         }
 
         return
@@ -115,7 +115,7 @@ fun VectorHomeScreen() {
                 )
 
                 Text(
-                    text = "Vector Launcher",
+                    text = selectedPriority?.title ?: "",
                     color = Color.White
                 )
 
@@ -189,7 +189,9 @@ fun VectorHomeScreen() {
                     onClick = {
 
                         currentProject =
-                            selectedPriority?.title ?: "Workspace"
+                            ProjectRepository.projects[
+                                selectedPriority?.title
+                            ]
 
                         showFocusSheet = false
 
@@ -214,7 +216,10 @@ fun VectorHomeScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp, vertical = 48.dp)
+                .padding(
+                    horizontal = 24.dp,
+                    vertical = 48.dp
+                )
         ) {
 
             Row(
@@ -222,7 +227,9 @@ fun VectorHomeScreen() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.vector_logo),
+                    painter = painterResource(
+                        id = R.drawable.vector_logo
+                    ),
                     contentDescription = "Vector Logo",
                     modifier = Modifier.size(36.dp)
                 )
@@ -245,20 +252,23 @@ fun VectorHomeScreen() {
             priorities.forEach { priority ->
 
                 Text(
-                    text = if (priority.active)
-                        "● ${priority.title}"
-                    else
-                        "○ ${priority.title}",
+                    text =
+                        if (priority.active)
+                            "● ${priority.title}"
+                        else
+                            "○ ${priority.title}",
 
-                    color = if (priority.active)
-                        Color.White
-                    else
-                        Color.LightGray,
+                    color =
+                        if (priority.active)
+                            Color.White
+                        else
+                            Color.LightGray,
 
-                    fontSize = if (priority.active)
-                        20.sp
-                    else
-                        18.sp,
+                    fontSize =
+                        if (priority.active)
+                            20.sp
+                        else
+                            18.sp,
 
                     modifier = Modifier.clickable {
                         selectedPriority = priority
