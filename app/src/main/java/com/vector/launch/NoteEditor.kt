@@ -11,6 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun NoteEditor(
@@ -19,9 +24,18 @@ fun NoteEditor(
 ) {
 
     var content by remember {
-        mutableStateOf(note.content)
+        mutableStateOf("")
     }
 
+    val context = LocalContext.current
+    LaunchedEffect(note.title) {
+
+        content =
+            NoteStorage.loadNote(
+                context,
+                note.title
+            )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +75,19 @@ fun NoteEditor(
         BasicTextField(
             value = content,
             onValueChange = {
+
                 content = it
+
+                CoroutineScope(
+                    Dispatchers.IO
+                ).launch {
+
+                    NoteStorage.saveNote(
+                        context,
+                        note.title,
+                        it
+                    )
+                }
             },
             textStyle = TextStyle(
                 color = Color.White,
