@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Vector Launcher N"
+rootProject.name = "Vector Launcher"
 include(":app")

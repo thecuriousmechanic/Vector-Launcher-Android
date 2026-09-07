@@ -221,9 +221,9 @@ fun SettingsScreen(
                         SetupAction(
                             title = "Default Home app",
                             description = if (isDefaultHome) {
-                                "Vector N opens when you press Home."
+                                "Vector Launcher opens when you press Home."
                             } else {
-                                "Use Vector N as the device starting screen."
+                                "Use Vector Launcher as the device starting screen."
                             },
                             actionLabel = if (isDefaultHome) "Active" else "Set as Home",
                             actionEnabled = !isDefaultHome,
@@ -536,7 +536,7 @@ fun SettingsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Vector N • Core features work offline",
+                        text = "Vector Launcher • Core features work offline",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -711,7 +711,7 @@ private fun WallpaperSettingsPanel(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "Vector N is using the theme background",
+                            text = "Vector Launcher is using the theme background",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

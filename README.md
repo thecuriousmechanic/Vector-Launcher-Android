@@ -1,6 +1,6 @@
-# Vector N
+# Vector Launcher
 
-Vector N is a local-first Android productivity launcher inspired by the speed and list-first interaction of minimalist launchers. It combines direct app access with a deliberately small surface for Today tasks, projects, and notes. It does not contain Niagara Launcher code, artwork, branding, or assets.
+Vector Launcher is a local-first Android productivity launcher inspired by the speed and list-first interaction of minimalist launchers. It combines direct app access with a deliberately small surface for Today tasks, projects, and notes. It does not contain Niagara Launcher code, artwork, branding, or assets.
 
 ## Current experience
 

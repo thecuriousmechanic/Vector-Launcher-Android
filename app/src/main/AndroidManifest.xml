@@ -33,7 +33,7 @@
         <service
             android:name=".notifications.VectorNotificationListenerService"
             android:exported="true"
-            android:label="Vector N notification previews"
+            android:label="Vector Launcher notification previews"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />

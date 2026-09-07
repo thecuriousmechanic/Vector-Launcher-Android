@@ -74,7 +74,7 @@ class BackupRepository(
 
     private fun parseAndValidateBackup(json: String): ParsedBackup {
         val root = JSONObject(json)
-        require(root.optString("format") == BACKUP_FORMAT) { "This is not a Vector N backup." }
+        require(root.optString("format") == BACKUP_FORMAT) { "This is not a Vector Launcher backup." }
         require(root.optInt("version", -1) == BACKUP_VERSION) { "This backup version is not supported." }
 
         val projects = root.requiredArray("projects").mapObjects(::parseProject)
